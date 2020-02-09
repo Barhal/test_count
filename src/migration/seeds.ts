@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner, getRepository } from 'typeorm';
-import { UserEntity } from '../model/user.entity';
+import { UserEntity, UserRole } from '../model/user.entity';
 
 export class Seed1581153334990 implements MigrationInterface {
   name = 'Seed1581153334990';
@@ -9,6 +9,7 @@ export class Seed1581153334990 implements MigrationInterface {
       username: 'Barhal',
       password: 'BarhalPassword',
       email: 'emailTest',
+      role: UserRole.ADMIN,
       createDateTime: new Date(),
       lastChangedDateTime: new Date(),
     });

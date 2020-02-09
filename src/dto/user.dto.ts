@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsUUID } from 'class-validator';
+import { IsString, IsUUID, IsEnum } from 'class-validator';
 import { isString } from 'util';
-import { UserEntity } from '../model/user.entity';
+import { UserEntity, UserRole } from '../model/user.entity';
 
 export class UserDTO implements Readonly<UserDTO> {
     @ApiProperty({ required: true })
@@ -20,6 +20,10 @@ export class UserDTO implements Readonly<UserDTO> {
     @IsString()
     password: string;
 
+    @ApiProperty({required: true })
+    @IsEnum(UserRole)
+    role: UserRole;
+
     public static from(dto: Partial<UserDTO>) {
         const it = new UserDTO();
         console.log('it' + dto.username);
@@ -27,16 +31,22 @@ export class UserDTO implements Readonly<UserDTO> {
         it.username = dto.username;
         it.email = dto.email;
         it.password = dto.password;
+        it.role = dto.role;
         return it;
     }
 
     public static fromEntity(entity: UserEntity) {
-        return this.from({
-            id: entity.id,
-            username: entity.username,
-            email: entity.email,
-            password: entity.password,
-        });
+        if (entity) {
+            return this.from({
+                id: entity.id,
+                username: entity.username,
+                email: entity.email,
+                password: entity.password,
+                role: entity.role,
+            });
+        } else {
+            return null;
+        }
     }
 
     public toEntity() {
@@ -45,6 +55,7 @@ export class UserDTO implements Readonly<UserDTO> {
         it.username = this.username;
         it.password = this.password;
         it.email = this.email;
+        it.role = this.role;
         it.createDateTime = new Date();
         it.lastChangedDateTime = new Date();
         return it;
