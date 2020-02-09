@@ -20,12 +20,9 @@ export class UserDTO implements Readonly<UserDTO> {
     @IsString()
     password: string;
 
-    @ApiProperty()
-    @IsString()
-    token: string;
-
     public static from(dto: Partial<UserDTO>) {
         const it = new UserDTO();
+        console.log('it' + dto.username);
         it.id = dto.id;
         it.username = dto.username;
         it.email = dto.email;
